@@ -550,11 +550,11 @@
       box.innerHTML = `
         <div class="game-score">Pergunta ${idx+1} de ${questions.length} · Acertos: ${score}</div>
         <p class="game-question">${q.text}</p>
-        <div class="opt-row" id="optRow"></div>
-        <div class="feedback" id="fb"></div>
-        <button class="next-q" id="nextQ">Próxima pergunta →</button>
+        <div class="opt-row"></div>
+        <div class="feedback"></div>
+        <button class="next-q">Próxima pergunta →</button>
       `;
-      const optRow = document.getElementById('optRow');
+      const optRow = box.querySelector('.opt-row');
       const opts = q.options || optionLabels;
       opts.forEach(opt=>{
         const b = document.createElement('button');
@@ -569,16 +569,17 @@
       const q = questions[idx];
       const correct = chosen.toLowerCase() === q.answer.toLowerCase();
       if(correct) score++;
-      document.querySelectorAll('#optRow .opt-btn').forEach(b=>{
+      box.querySelectorAll('.opt-row .opt-btn').forEach(b=>{
         b.disabled = true;
         if(b.textContent.toLowerCase() === q.answer.toLowerCase()) b.classList.add('correct');
         else if(b===btn) b.classList.add('wrong');
       });
-      const fb = document.getElementById('fb');
+      const fb = box.querySelector('.feedback');
       fb.classList.add('show');
       fb.textContent = (correct ? '✓ Isso mesmo! ' : '✗ Quase. ') + q.explain;
-      document.getElementById('nextQ').style.display = 'inline-block';
-      document.getElementById('nextQ').onclick = () => {
+      const nextBtn = box.querySelector('.next-q');
+      nextBtn.style.display = 'inline-block';
+      nextBtn.onclick = () => {
         idx++;
         if(idx < questions.length) renderQuestion();
         else renderDone();
@@ -590,42 +591,42 @@
         <div class="game-done">
           <div class="score-big">${score} / ${questions.length}</div>
           <p style="color:var(--paper-dim); margin-top:8px;">acertos nesta rodada</p>
-          <button class="replay" id="replayBtn">Jogar de novo</button>
+          <button class="replay">Jogar de novo</button>
         </div>
       `;
-      document.getElementById('replayBtn').onclick = () => { idx=0; score=0; renderQuestion(); };
+      box.querySelector('.replay').onclick = () => { idx=0; score=0; renderQuestion(); };
     }
 
     renderQuestion();
   }
 
-  // JOGO 1: Ser ou Estar
+  // JOGO 1: Ser ou Estar (opções já conjugadas para o sujeito da frase)
   const g1 = [
-    {text:"Eu <em>___</em> na aula de português agora.", answer:"Estar", explain:"Localização no momento — sempre ESTAR."},
-    {text:"Nós <em>___</em> calmos hoje.", answer:"Estar", explain:"Estado temporário, pode mudar amanhã."},
-    {text:"Elas <em>___</em> de São Paulo.", answer:"Ser", explain:"Origem/naturalidade é permanente — SER."},
-    {text:"Vocês <em>___</em> estrangeiros.", answer:"Ser", explain:"Nacionalidade não muda de um dia para o outro — SER."},
-    {text:"A mesa <em>___</em> de madeira.", answer:"Ser", explain:"Material do objeto — característica permanente, SER."},
-    {text:"O dia <em>___</em> frio hoje.", answer:"Estar", explain:"O clima muda a cada dia — ESTAR."},
-    {text:"O livro <em>___</em> de matemática.", answer:"Ser", explain:"Categoria/assunto do livro — SER."},
-    {text:"A porta <em>___</em> aberta.", answer:"Estar", explain:"Condição temporária da porta — pode ser fechada depois — ESTAR."},
-    {text:"O professor <em>___</em> nervoso hoje.", answer:"Estar", explain:"Emoção passageira — ESTAR."},
-    {text:"As roupas <em>___</em> sujas.", answer:"Estar", explain:"Condição temporária (podem ser lavadas) — ESTAR."}
+    {text:"Eu <em>___</em> na aula de português agora.", options:["sou","estou"], answer:"estou", explain:"Localização no momento — sempre ESTAR (estou)."},
+    {text:"Nós <em>___</em> calmos hoje.", options:["somos","estamos"], answer:"estamos", explain:"Estado temporário, pode mudar amanhã — ESTAR (estamos)."},
+    {text:"Elas <em>___</em> de São Paulo.", options:["são","estão"], answer:"são", explain:"Origem/naturalidade é permanente — SER (são)."},
+    {text:"Vocês <em>___</em> estrangeiros.", options:["são","estão"], answer:"são", explain:"Nacionalidade não muda de um dia para o outro — SER (são)."},
+    {text:"A mesa <em>___</em> de madeira.", options:["é","está"], answer:"é", explain:"Material do objeto — característica permanente, SER (é)."},
+    {text:"O dia <em>___</em> frio hoje.", options:["é","está"], answer:"está", explain:"O clima muda a cada dia — ESTAR (está)."},
+    {text:"O livro <em>___</em> de matemática.", options:["é","está"], answer:"é", explain:"Categoria/assunto do livro — SER (é)."},
+    {text:"A porta <em>___</em> aberta.", options:["é","está"], answer:"está", explain:"Condição temporária da porta — pode ser fechada depois — ESTAR (está)."},
+    {text:"O professor <em>___</em> nervoso hoje.", options:["é","está"], answer:"está", explain:"Emoção passageira — ESTAR (está)."},
+    {text:"As roupas <em>___</em> sujas.", options:["são","estão"], answer:"estão", explain:"Condição temporária (podem ser lavadas) — ESTAR (estão)."}
   ];
-  buildGame('g1-box', g1, ['Ser','Estar']);
+  buildGame('g1-box', g1, []);
 
-  // JOGO 2: Ser ou Ter
+  // JOGO 2: Ser ou Ter (opções já conjugadas para o sujeito da frase)
   const g2 = [
-    {text:"Ela <em>___</em> ruiva.", answer:"Ser", explain:"Adjetivo que descreve a pessoa diretamente — SER."},
-    {text:"Ela <em>___</em> os cabelos longos e cacheados.", answer:"Ter", explain:"Parte do corpo/posse — TER."},
-    {text:"Ela <em>___</em> os olhos verdes.", answer:"Ter", explain:"Parte do corpo — TER."},
-    {text:"Ele <em>___</em> moreno.", answer:"Ser", explain:"Adjetivo direto sobre a pessoa — SER."},
-    {text:"Ele <em>___</em> a pele clara.", answer:"Ter", explain:"Parte do corpo — TER."},
-    {text:"Ele <em>___</em> careca.", answer:"Ser", explain:"Descreve a pessoa como um todo — SER."},
-    {text:"Eu <em>___</em> 26 anos.", answer:"Ter", explain:"Idade em português sempre usa TER, nunca SER."},
-    {text:"Nós <em>___</em> altos.", answer:"Ser", explain:"Característica física da pessoa (não uma parte específica) — SER."}
+    {text:"Ela <em>___</em> ruiva.", options:["é","tem"], answer:"é", explain:"Adjetivo que descreve a pessoa diretamente — SER (é)."},
+    {text:"Ela <em>___</em> os cabelos longos e cacheados.", options:["é","tem"], answer:"tem", explain:"Parte do corpo/posse — TER (tem)."},
+    {text:"Ela <em>___</em> os olhos verdes.", options:["é","tem"], answer:"tem", explain:"Parte do corpo — TER (tem)."},
+    {text:"Ele <em>___</em> moreno.", options:["é","tem"], answer:"é", explain:"Adjetivo direto sobre a pessoa — SER (é)."},
+    {text:"Ele <em>___</em> a pele clara.", options:["é","tem"], answer:"tem", explain:"Parte do corpo — TER (tem)."},
+    {text:"Ele <em>___</em> careca.", options:["é","tem"], answer:"é", explain:"Descreve a pessoa como um todo — SER (é)."},
+    {text:"Eu <em>___</em> 26 anos.", options:["sou","tenho"], answer:"tenho", explain:"Idade em português sempre usa TER (tenho), nunca SER."},
+    {text:"Nós <em>___</em> altos.", options:["somos","temos"], answer:"somos", explain:"Característica física da pessoa (não uma parte específica) — SER (somos)."}
   ];
-  buildGame('g2-box', g2, ['Ser','Ter']);
+  buildGame('g2-box', g2, []);
 
   // JOGO 3: Situações com Estar (multipla escolha)
   const g3 = [
