@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ser, Estar e Ter — Aula do Emílio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14171C;
+    --ink-2:#1D2128;
+    --paper:#F2ECDD;
+    --paper-dim:#C9C2AC;
+    --gold:#E8A33D;
+    --brick:#C1432F;
+    --teal:#4C8C79;
+    --line: rgba(242,236,221,0.16);
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top: env(safe-area-inset-top, 0px);}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    overflow:hidden;
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(232,163,61,0.10), transparent 40%),
+      radial-gradient(circle at 92% 85%, rgba(76,140,121,0.12), transparent 45%);
+  }
+  h1,h2,h3,.display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+    line-height:0.95;
+  }
+  .deck{
+    position:relative;
+    width:100%;
+    height:100dvh;
+    overflow:hidden;
+  }
+  .slide{
+    position:absolute;
+    inset:0;
+    display:none;
+    flex-direction:column;
+    padding: max(28px, env(safe-area-inset-top)) clamp(20px,5vw,72px) 96px;
+    overflow-y:auto;
+    animation: fadeIn .45s ease;
+  }
+  .slide.active{display:flex;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .eyebrow{
+    color:var(--gold);
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    margin:0 0 6px;
+  }
+  .slide h2.display{
+    font-size:clamp(2rem, 6vw, 3.6rem);
+    color:var(--paper);
+    margin:0 0 18px;
+  }
+  .slide h2.display span{color:var(--gold);}
+  .subtitle{
+    color:var(--paper-dim);
+    font-size:clamp(0.95rem,1.6vw,1.15rem);
+    max-width:62ch;
+    margin:0 0 28px;
+  }
+  .content-row{
+    display:flex;
+    gap:clamp(20px,4vw,48px);
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .col{flex:1 1 320px; min-width:0;}
+  table.pron{
+    width:100%;
+    border-collapse:collapse;
+    font-size:1rem;
+  }
+  table.pron th, table.pron td{
+    text-align:left;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  table.pron th{
+    color:var(--gold);
+    font-weight:600;
+    font-size:0.85rem;
+    text-transform:none;
+  }
+  table.pron.estar th{color:var(--brick);}
+  table.pron.ter th{color:var(--teal);}
+  ul.examples{list-style:none; margin:0; padding:0;}
+  ul.examples li{
+    padding:10px 0 10px 22px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    font-size:1rem;
+    line-height:1.5;
+  }
+  ul.examples li::before{
+    content:"→";
+    position:absolute; left:0; color:var(--gold);
+    font-weight:700;
+  }
+  ul.examples.estar li::before{color:var(--brick);}
+  ul.examples.ter li::before{color:var(--teal);}
+  strong.mark{color:var(--gold);}
+  strong.mark.estar{color:var(--brick);}
+  strong.mark.ter{color:var(--teal);}
+  .tip-card{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    border-radius:4px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .tip-card.estar{border-left-color:var(--brick);}
+  .tip-card.ter{border-left-color:var(--teal);}
+  .tip-card h3{
+    font-family:'Work Sans', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    margin:0 0 6px;
+    color:var(--paper);
+  }
+  .tip-card p{margin:0; color:var(--paper-dim); font-size:0.95rem; line-height:1.55;}
+  .badge-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;}
+  .badge{
+    font-family:'Anton', sans-serif;
+    font-size:1.3rem;
+    padding:8px 20px;
+    border-radius:100px;
+    border:2px solid var(--gold);
+    color:var(--gold);
+  }
+  .badge.estar{border-color:var(--brick); color:var(--brick);}
+  .badge.ter{border-color:var(--teal); color:var(--teal);}
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(180px,1fr));
+    gap:12px;
+  }
+  .vocab-chip{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 14px;
+    font-size:0.95rem;
+  }
+  .vocab-chip b{color:var(--brick); font-weight:700;}
+
+  /* NAV */
+  .nav{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding: 14px clamp(16px,5vw,72px);
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    background:linear-gradient(to top, rgba(20,23,28,0.96), rgba(20,23,28,0.0));
+    z-index:50;
+  }
+  .nav button{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    background:var(--paper);
+    color:var(--ink);
+    border:none;
+    padding:11px 20px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .nav button:hover{transform:translateY(-1px); background:var(--gold);}
+  .nav button:disabled{opacity:0.3; cursor:default; transform:none; background:var(--paper);}
+  .dots{display:flex; gap:6px; flex-wrap:wrap; justify-content:center;}
+  .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--paper-dim); opacity:0.4;
+    transition:opacity .2s, background .2s, width .2s;
+  }
+  .dot.active{opacity:1; background:var(--gold); width:20px; border-radius:5px;}
+  .counter{font-size:0.8rem; color:var(--paper-dim); min-width:54px; text-align:right;}
+
+  /* GAME UI */
+  .game-box{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:clamp(20px,3vw,36px);
+    max-width:720px;
+    width:100%;
+  }
+  .game-score{
+    font-family:'Anton', sans-serif;
+    color:var(--gold);
+    font-size:1.1rem;
+    margin-bottom:14px;
+  }
+  .game-question{
+    font-size:clamp(1.1rem,2.4vw,1.4rem);
+    margin:0 0 22px;
+    line-height:1.45;
+  }
+  .game-question em{color:var(--gold); font-style:normal; font-weight:600;}
+  .opt-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .opt-btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    padding:14px 26px;
+    border-radius:8px;
+    border:2px solid var(--paper-dim);
+    background:transparent;
+    color:var(--paper);
+    cursor:pointer;
+    flex:1 1 140px;
+    transition:all .15s ease;
+  }
+  .opt-btn:hover{border-color:var(--gold);}
+  .opt-btn.correct{background:var(--teal); border-color:var(--teal); color:var(--ink);}
+  .opt-btn.wrong{background:var(--brick); border-color:var(--brick); color:var(--paper);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{
+    margin-top:18px;
+    font-size:0.95rem;
+    color:var(--paper-dim);
+    min-height:24px;
+    line-height:1.5;
+  }
+  .feedback.show{color:var(--paper);}
+  .next-q{
+    margin-top:18px;
+    font-family:'Work Sans', sans-serif;
+    font-weight:700;
+    background:var(--gold);
+    color:var(--ink);
+    border:none;
+    padding:11px 22px;
+    border-radius:100px;
+    cursor:pointer;
+    display:none;
+  }
+  .game-done{
+    text-align:center;
+    padding:30px 10px;
+  }
+  .game-done .score-big{
+    font-family:'Anton', sans-serif;
+    font-size:3rem;
+    color:var(--gold);
+  }
+  .replay{
+    margin-top:14px;
+    background:transparent;
+    border:2px solid var(--paper-dim);
+    color:var(--paper);
+    padding:10px 20px;
+    border-radius:100px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .cover-wrap{
+    margin:auto 0;
+    max-width:900px;
+  }
+  .cover-verbs{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-top:26px;
+  }
+  .cover-verb{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(1.1rem,2.2vw,1.5rem);
+    padding:10px 22px;
+    border-radius:100px;
+  }
+  .cover-verb.ser{background:var(--gold); color:var(--ink);}
+  .cover-verb.estar{background:var(--brick); color:var(--paper);}
+  .cover-verb.ter{background:var(--teal); color:var(--ink);}
+  .final-note{
+    color:var(--paper-dim);
+    font-size:1rem;
+    max-width:60ch;
+  }
+  @media (max-width: 640px){
+    .content-row{gap:24px;}
+    .counter{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 0: CAPA -->
+  <section class="slide active" data-slide="0">
+    <div class="cover-wrap">
+      <p class="eyebrow">AULA DE PORTUGUÊS · LIVRO SAMBA</p>
+      <h2 class="display" style="font-size:clamp(2.6rem,9vw,5.5rem);">SER, ESTAR<br>e <span>TER</span></h2>
+      <p class="subtitle" style="font-size:1.05rem;">Preparado para o Emílio — já mandando bem com o espanhol como ponto de partida, hora de afinar os três verbos que mais aparecem em qualquer conversa em português.</p>
+      <div class="cover-verbs">
+        <span class="cover-verb ser">SER</span>
+        <span class="cover-verb estar">ESTAR</span>
+        <span class="cover-verb ter">TER</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 1: SER -->
+  <section class="slide" data-slide="1">
+    <p class="eyebrow">VERBO 1 DE 3</p>
+    <h2 class="display">O verbo <span>SER</span></h2>
+    <p class="subtitle">Usado para apresentar alguém e descrever características que não mudam com facilidade: nome, nacionalidade, profissão, identidade.</p>
+    <div class="content-row">
+      <div class="col">
+        <table class="pron">
+          <tr><th>Pronome</th><th>Ser</th></tr>
+          <tr><td>Eu</td><td>sou</td></tr>
+          <tr><td>Você</td><td>é</td></tr>
+          <tr><td>Ele / Ela / A gente</td><td>é</td></tr>
+          <tr><td>Nós</td><td>somos</td></tr>
+          <tr><td>Vocês</td><td>são</td></tr>
+          <tr><td>Eles / Elas</td><td>são</td></tr>
+        </table>
+      </div>
+      <div class="col">
+        <ul class="examples">
+          <li>Gerard <strong class="mark">é</strong> filho de Johann e Marie. Os pais de Gerard <strong class="mark">são</strong> Johann e Marie.</li>
+          <li>O aniversário de Gerard <strong class="mark">é</strong> dia 20 de dezembro.</li>
+          <li>Ele <strong class="mark">é</strong> de nacionalidade alemã / Gerard <strong class="mark">é</strong> alemão.</li>
+          <li>Johann e Marie <strong class="mark">são</strong> casados.</li>
+          <li>Gerard <strong class="mark">é</strong> estrangeiro.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: ESTAR -->
+  <section class="slide" data-slide="2">
+    <p class="eyebrow">VERBO 2 DE 3</p>
+    <h2 class="display" style="color:var(--brick);">O verbo <span style="color:var(--brick);">ESTAR</span></h2>
+    <p class="subtitle">Usado para estados físicos, emocionais e localização — tudo aquilo que pode mudar de um dia para o outro, ou até de uma hora para outra.</p>
+    <div class="content-row">
+      <div class="col">
+        <table class="pron estar">
+          <tr><th>Pronome</th><th>Estar</th></tr>
+          <tr><td>Eu</td><td>estou</td></tr>
+          <tr><td>Você</td><td>está</td></tr>
+          <tr><td>Ele / Ela</td><td>está</td></tr>
+          <tr><td>Nós</td><td>estamos</td></tr>
+          <tr><td>Vocês</td><td>estão</td></tr>
+          <tr><td>Eles / Elas</td><td>estão</td></tr>
+        </table>
+      </div>
+      <div class="col">
+        <ul class="examples estar">
+          <li>Clarice <strong class="mark estar">está com</strong> sede. <em style="color:var(--paper-dim); font-style:normal;">(estar com + substantivo)</em></li>
+          <li>Eu <strong class="mark estar">estou</strong> na aula de português agora.</li>
+          <li>O professor <strong class="mark estar">está</strong> nervoso hoje.</li>
+          <li>A porta <strong class="mark estar">está</strong> aberta.</li>
+          <li>Vocês <strong class="mark estar">estão</strong> calmos?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: SER x ESTAR dicas -->
+  <section class="slide" data-slide="3">
+    <p class="eyebrow">A GRANDE DIFERENÇA</p>
+    <h2 class="display"><span>SER</span> x <span style="color:var(--brick);">ESTAR</span></h2>
+    <p class="subtitle">O truque nunca é decorar regra por regra — é perguntar: isso é permanente ou temporário?</p>
+    <div class="content-row">
+      <div class="col">
+        <div class="tip-card">
+          <h3>1. Pergunte: isso muda fácil?</h3>
+          <p>Se a resposta é "não, faz parte de quem a pessoa é" → <strong class="mark">SER</strong>. Se é "sim, pode mudar hoje ou amanhã" → <strong class="mark estar">ESTAR</strong>. Nacionalidade, profissão e personalidade → SER. Humor, saúde e localização → ESTAR.</p>
+        </div>
+        <div class="tip-card">
+          <h3>2. O mesmo adjetivo, dois sentidos</h3>
+          <p><strong class="mark">João é alegre</strong> = faz parte da personalidade dele. <strong class="mark estar">João está alegre</strong> = hoje ele está de bom humor, mas isso pode não ser sempre assim.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="tip-card estar">
+          <h3>3. Ponte com o espanhol</h3>
+          <p>A boa notícia: o espanhol já tem exatamente essa distinção (ser/estar), então a lógica já está na sua cabeça — só muda a conjugação. "Soy de Brasil" → <strong class="mark">Eu sou do Brasil</strong>. "Estoy cansado" → <strong class="mark estar">Eu estou cansado</strong>.</p>
+        </div>
+        <div class="tip-card estar">
+          <h3>4. Localização sempre é ESTAR</h3>
+          <p>Mesmo quando em espanhol às vezes você hesitaria, em português é regra fixa: onde algo ou alguém <strong class="mark estar">está</strong> localizado usa sempre estar. "O livro está na mesa." "Nós estamos em casa."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: SER x TER -->
+  <section class="slide" data-slide="4">
+    <p class="eyebrow">O TERCEIRO VERBO</p>
+    <h2 class="display"><span>SER</span> x <span style="color:var(--teal);">TER</span></h2>
+    <p class="subtitle">Para descrever características físicas, o português troca de verbo dependendo se você está descrevendo a pessoa como um todo ou uma parte específica do corpo.</p>
+    <div class="content-row">
+      <div class="col">
+        <div class="tip-card">
+          <h3>SER + adjetivo da pessoa</h3>
+          <p>Ela <strong class="mark">é</strong> ruiva. Ele <strong class="mark">é</strong> moreno. Ele <strong class="mark">é</strong> careca / calvo.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="tip-card ter">
+          <h3>TER + parte do corpo</h3>
+          <p>Ela <strong class="mark ter">tem</strong> os cabelos ruivos, longos e cacheados. Ela <strong class="mark ter">tem</strong> a pele clara e os olhos verdes. Ele <strong class="mark ter">tem</strong> a pele clara e os olhos azuis.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip-card" style="margin-top:8px; border-left-color:var(--teal);">
+      <h3>Repare no "não"</h3>
+      <p>"Ele é careca" já diz tudo — mas se quiser confirmar com TER, é sempre na negativa: <strong class="mark ter">ele não tem cabelos</strong>. TER descreve o que a pessoa possui (ou não possui); SER descreve o que a pessoa é.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: Vocabulário ESTAR -->
+  <section class="slide" data-slide="5">
+    <p class="eyebrow">VOCABULÁRIO</p>
+    <h2 class="display" style="color:var(--brick);">Estados com <span style="color:var(--brick);">ESTAR</span></h2>
+    <p class="subtitle">Duas formas: <strong class="mark estar">estar + adjetivo</strong> (feliz, triste, nervoso) ou <strong class="mark estar">estar com + substantivo</strong> (fome, sede, sono, frio, calor, medo).</p>
+    <div class="vocab-grid">
+      <div class="vocab-chip"><b>estar</b> feliz / triste</div>
+      <div class="vocab-chip"><b>estar</b> calmo / nervoso</div>
+      <div class="vocab-chip"><b>estar</b> preocupado</div>
+      <div class="vocab-chip"><b>estar</b> doente</div>
+      <div class="vocab-chip"><b>estar</b> cansado</div>
+      <div class="vocab-chip"><b>estar</b> animado / desanimado</div>
+      <div class="vocab-chip"><b>estar com</b> frio</div>
+      <div class="vocab-chip"><b>estar com</b> calor</div>
+      <div class="vocab-chip"><b>estar com</b> fome</div>
+      <div class="vocab-chip"><b>estar com</b> sede</div>
+      <div class="vocab-chip"><b>estar com</b> sono</div>
+      <div class="vocab-chip"><b>estar com</b> medo</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: Intro jogos -->
+  <section class="slide" data-slide="6">
+    <p class="eyebrow">PRÁTICA</p>
+    <h2 class="display">Hora do <span>jogo</span></h2>
+    <p class="subtitle">Três rodadas rápidas baseadas nos exercícios do livro Samba. Use os botões "Próximo" para avançar entre elas — cada uma tem pontuação no final.</p>
+    <div class="content-row">
+      <div class="col">
+        <div class="badge-row" style="flex-direction:column; align-items:flex-start; gap:14px;">
+          <span class="badge">Jogo 1 — Ser ou Estar</span>
+          <span class="badge ter">Jogo 2 — Ser ou Ter</span>
+          <span class="badge estar">Jogo 3 — Situações com Estar</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: GAME 1 -->
+  <section class="slide" data-slide="7">
+    <p class="eyebrow">JOGO 1</p>
+    <h2 class="display">Ser ou <span style="color:var(--brick);">Estar</span>?</h2>
+    <div class="game-box" id="g1-box"></div>
+  </section>
+
+  <!-- SLIDE 8: GAME 2 -->
+  <section class="slide" data-slide="8">
+    <p class="eyebrow">JOGO 2</p>
+    <h2 class="display">Ser ou <span style="color:var(--teal);">Ter</span>?</h2>
+    <div class="game-box" id="g2-box"></div>
+  </section>
+
+  <!-- SLIDE 9: GAME 3 -->
+  <section class="slide" data-slide="9">
+    <p class="eyebrow">JOGO 3</p>
+    <h2 class="display" style="color:var(--brick);">Qual é a <span style="color:var(--brick);">situação</span>?</h2>
+    <div class="game-box" id="g3-box"></div>
+  </section>
+
+  <!-- SLIDE 10: FIM -->
+  <section class="slide" data-slide="10">
+    <div class="cover-wrap">
+      <p class="eyebrow">RESUMO</p>
+      <h2 class="display">Muito bem, <span>Emílio</span>!</h2>
+      <p class="final-note">SER para o que não muda (nome, nacionalidade, profissão, personalidade). ESTAR para o que é passageiro (humor, saúde, localização). TER para o que a pessoa possui, principalmente partes do corpo. A lógica é a mesma do espanhol — só a prática com esses jogos que muda.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prevBtn" onclick="go(-1)">← Anterior</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter"></span>
+  <button id="nextBtn" onclick="go(1)">Próximo →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' active':'');
+    dotsEl.appendChild(d);
+  });
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===current));
+    document.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('active', i===current));
+    document.getElementById('counter').textContent = (current+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = current===0;
+    document.getElementById('nextBtn').disabled = current===total-1;
+  }
+  function go(delta){
+    const next = current+delta;
+    if(next<0 || next>=total) return;
+    current = next;
+    render();
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight') go(1);
+    if(e.key==='ArrowLeft') go(-1);
+  });
+  render();
+
+  // ---------- GAME ENGINE ----------
+  function buildGame(containerId, questions, optionLabels){
+    const box = document.getElementById(containerId);
+    let idx = 0, score = 0;
+
+    function renderQuestion(){
+      const q = questions[idx];
+      box.innerHTML = `
+        <div class="game-score">Pergunta ${idx+1} de ${questions.length} · Acertos: ${score}</div>
+        <p class="game-question">${q.text}</p>
+        <div class="opt-row"></div>
+        <div class="feedback"></div>
+        <button class="next-q">Próxima pergunta →</button>
+      `;
+      const optRow = box.querySelector('.opt-row');
+      const opts = q.options || optionLabels;
+      opts.forEach(opt=>{
+        const b = document.createElement('button');
+        b.className = 'opt-btn';
+        b.textContent = opt;
+        b.onclick = () => answer(opt, b);
+        optRow.appendChild(b);
+      });
+    }
+
+    function answer(chosen, btn){
+      const q = questions[idx];
+      const correct = chosen.toLowerCase() === q.answer.toLowerCase();
+      if(correct) score++;
+      box.querySelectorAll('.opt-row .opt-btn').forEach(b=>{
+        b.disabled = true;
+        if(b.textContent.toLowerCase() === q.answer.toLowerCase()) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+      });
+      const fb = box.querySelector('.feedback');
+      fb.classList.add('show');
+      fb.textContent = (correct ? '✓ Isso mesmo! ' : '✗ Quase. ') + q.explain;
+      const nextBtn = box.querySelector('.next-q');
+      nextBtn.style.display = 'inline-block';
+      nextBtn.onclick = () => {
+        idx++;
+        if(idx < questions.length) renderQuestion();
+        else renderDone();
+      };
+    }
+
+    function renderDone(){
+      box.innerHTML = `
+        <div class="game-done">
+          <div class="score-big">${score} / ${questions.length}</div>
+          <p style="color:var(--paper-dim); margin-top:8px;">acertos nesta rodada</p>
+          <button class="replay">Jogar de novo</button>
+        </div>
+      `;
+      box.querySelector('.replay').onclick = () => { idx=0; score=0; renderQuestion(); };
+    }
+
+    renderQuestion();
+  }
+
+  // JOGO 1: Ser ou Estar (opções já conjugadas para o sujeito da frase)
+  const g1 = [
+    {text:"Eu <em>___</em> na aula de português agora.", options:["sou","estou"], answer:"estou", explain:"Localização no momento — sempre ESTAR (estou)."},
+    {text:"Nós <em>___</em> calmos hoje.", options:["somos","estamos"], answer:"estamos", explain:"Estado temporário, pode mudar amanhã — ESTAR (estamos)."},
+    {text:"Elas <em>___</em> de São Paulo.", options:["são","estão"], answer:"são", explain:"Origem/naturalidade é permanente — SER (são)."},
+    {text:"Vocês <em>___</em> estrangeiros.", options:["são","estão"], answer:"são", explain:"Nacionalidade não muda de um dia para o outro — SER (são)."},
+    {text:"A mesa <em>___</em> de madeira.", options:["é","está"], answer:"é", explain:"Material do objeto — característica permanente, SER (é)."},
+    {text:"O dia <em>___</em> frio hoje.", options:["é","está"], answer:"está", explain:"O clima muda a cada dia — ESTAR (está)."},
+    {text:"O livro <em>___</em> de matemática.", options:["é","está"], answer:"é", explain:"Categoria/assunto do livro — SER (é)."},
+    {text:"A porta <em>___</em> aberta.", options:["é","está"], answer:"está", explain:"Condição temporária da porta — pode ser fechada depois — ESTAR (está)."},
+    {text:"O professor <em>___</em> nervoso hoje.", options:["é","está"], answer:"está", explain:"Emoção passageira — ESTAR (está)."},
+    {text:"As roupas <em>___</em> sujas.", options:["são","estão"], answer:"estão", explain:"Condição temporária (podem ser lavadas) — ESTAR (estão)."}
+  ];
+  buildGame('g1-box', g1, []);
+
+  // JOGO 2: Ser ou Ter (opções já conjugadas para o sujeito da frase)
+  const g2 = [
+    {text:"Ela <em>___</em> ruiva.", options:["é","tem"], answer:"é", explain:"Adjetivo que descreve a pessoa diretamente — SER (é)."},
+    {text:"Ela <em>___</em> os cabelos longos e cacheados.", options:["é","tem"], answer:"tem", explain:"Parte do corpo/posse — TER (tem)."},
+    {text:"Ela <em>___</em> os olhos verdes.", options:["é","tem"], answer:"tem", explain:"Parte do corpo — TER (tem)."},
+    {text:"Ele <em>___</em> moreno.", options:["é","tem"], answer:"é", explain:"Adjetivo direto sobre a pessoa — SER (é)."},
+    {text:"Ele <em>___</em> a pele clara.", options:["é","tem"], answer:"tem", explain:"Parte do corpo — TER (tem)."},
+    {text:"Ele <em>___</em> careca.", options:["é","tem"], answer:"é", explain:"Descreve a pessoa como um todo — SER (é)."},
+    {text:"Eu <em>___</em> 26 anos.", options:["sou","tenho"], answer:"tenho", explain:"Idade em português sempre usa TER (tenho), nunca SER."},
+    {text:"Nós <em>___</em> altos.", options:["somos","temos"], answer:"somos", explain:"Característica física da pessoa (não uma parte específica) — SER (somos)."}
+  ];
+  buildGame('g2-box', g2, []);
+
+  // JOGO 3: Situações com Estar (multipla escolha)
+  const g3 = [
+    {text:"Você não dormiu a noite toda depois de um show de samba. Você está...", answer:"com sono", options:["com sono","com sede","com calor","doente"], explain:"Falta de sono = 'estar com sono'."},
+    {text:"Você correu 10km e não bebe água há horas. Você está...", answer:"com sede", options:["com fome","com sede","nervoso","com frio"], explain:"Vontade de beber água = 'estar com sede'."},
+    {text:"Você não come desde ontem à noite. Você está...", answer:"com fome", options:["com fome","preocupado","com calor","cansado"], explain:"Vontade de comer = 'estar com fome'."},
+    {text:"Está fazendo 5°C lá fora e você esqueceu o casaco. Você está...", answer:"com frio", options:["com frio","com calor","feliz","com medo"], explain:"Temperatura baixa = 'estar com frio'."},
+    {text:"É verão, 40°C, e você está na praia ao meio-dia. Você está...", answer:"com calor", options:["com calor","com frio","triste","com sono"], explain:"Temperatura alta = 'estar com calor'."},
+    {text:"Sua prova é amanhã e você ainda não estudou nada. Você está...", answer:"preocupado", options:["feliz","preocupado","com calor","careca"], explain:"Ansiedade sobre algo futuro = 'estar preocupado'."},
+    {text:"Você ganhou um prêmio inesperado. Você está...", answer:"feliz", options:["triste","com fome","feliz","doente"], explain:"Uma boa notícia deixa alguém 'feliz'."},
+    {text:"Você está com febre e dor de garganta. Você está...", answer:"doente", options:["cansado","doente","com sede","animado"], explain:"Sintomas de saúde = 'estar doente'."}
+  ];
+  buildGame('g3-box', g3, []);
+</script>
+</body>
+</html>
